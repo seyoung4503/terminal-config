@@ -58,7 +58,7 @@ fi
 
 # -------------------- 4. brew packages + fonts --------------------
 step "4/8  brew formulae & fonts"
-BREW_FORMULAE=(zsh-syntax-highlighting fastfetch pyenv nvm)
+BREW_FORMULAE=(zsh-syntax-highlighting fastfetch pyenv nvm tmux)
 BREW_CASKS=(font-jetbrains-mono-nerd-font ghostty)
 
 if ask "install brew formulae (${BREW_FORMULAE[*]})?"; then
@@ -131,6 +131,13 @@ if ask "install ~/.zshrc and ~/.zprofile (auto-rewrite /Users/$SOURCE_USER -> \$
   install_dotfile "$SCRIPT_DIR/zshrc"    "$HOME/.zshrc"    ".zshrc"
   install_dotfile "$SCRIPT_DIR/zprofile" "$HOME/.zprofile" ".zprofile"
   warn ".zshrc refers to conda, bun, gcloud, antigravity, opencode — install only what you use, comment out the rest."
+fi
+
+if ask "install ~/.tmux.conf (mouse scroll, vim-tmux-navigator, Shift+Enter passthrough)?"; then
+  install_dotfile "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf" ".tmux.conf"
+  if command -v tmux >/dev/null 2>&1; then
+    tmux source-file "$HOME/.tmux.conf" 2>/dev/null && ok "reloaded tmux config (if server running)"
+  fi
 fi
 
 # -------------------- 8. Optional: default shell to zsh --------------------
