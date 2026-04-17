@@ -58,7 +58,7 @@ fi
 
 # -------------------- 4. brew packages + fonts --------------------
 step "4/8  brew formulae & fonts"
-BREW_FORMULAE=(zsh-syntax-highlighting fastfetch pyenv nvm tmux)
+BREW_FORMULAE=(zsh-syntax-highlighting fastfetch pyenv nvm tmux neovim ripgrep fd lazygit)
 BREW_CASKS=(font-jetbrains-mono-nerd-font ghostty)
 
 if ask "install brew formulae (${BREW_FORMULAE[*]})?"; then
@@ -137,6 +137,25 @@ if ask "install ~/.tmux.conf (mouse scroll, vim-tmux-navigator, Shift+Enter pass
   install_dotfile "$SCRIPT_DIR/tmux.conf" "$HOME/.tmux.conf" ".tmux.conf"
   if command -v tmux >/dev/null 2>&1; then
     tmux source-file "$HOME/.tmux.conf" 2>/dev/null && ok "reloaded tmux config (if server running)"
+  fi
+fi
+
+# Neovim (LazyVim) config
+if ask "install ~/.config/nvim (LazyVim)?"; then
+  nvim_dst="$HOME/.config/nvim"
+  if [[ -d "$nvim_dst" ]]; then
+    backup="${nvim_dst}.backup.$(date +%Y%m%d-%H%M%S)"
+    if ask "$nvim_dst exists. move to $(basename "$backup") and replace?" n; then
+      mv "$nvim_dst" "$backup"
+    else
+      warn "skipping nvim config"
+      nvim_dst=""
+    fi
+  fi
+  if [[ -n "$nvim_dst" ]]; then
+    mkdir -p "$HOME/.config"
+    cp -R "$SCRIPT_DIR/nvim" "$nvim_dst"
+    ok "installed $nvim_dst  (first launch of nvim will bootstrap lazy.nvim and plugins)"
   fi
 fi
 
