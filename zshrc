@@ -110,9 +110,6 @@ prompt_context() {
 eval "$(/opt/homebrew/bin/brew shellenv)"
 source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Ctrl+U (= Cmd+Backspace) kills only cursor→line-start, not the whole line
-bindkey '^U' backward-kill-line
-
 prompt_context() {
   # 1) 이모지 배열
   local emojis=(
