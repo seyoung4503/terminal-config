@@ -81,6 +81,16 @@ if ask "install brew casks (${BREW_CASKS[*]})?"; then
   done
 fi
 
+# macism (custom tap) — nvim IME 자동 전환에 필요
+if ask "install macism (IME 자동 전환 CLI, im-select.nvim 의존)?"; then
+  if command -v macism >/dev/null 2>&1; then
+    ok "macism already installed"
+  else
+    brew tap laishulu/homebrew 2>/dev/null || true
+    brew install macism
+  fi
+fi
+
 # -------------------- 5. pokemon-colorscripts (manual) --------------------
 step "5/8  pokemon-colorscripts"
 if command -v pokemon-colorscripts >/dev/null 2>&1; then
